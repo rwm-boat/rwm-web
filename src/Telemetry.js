@@ -13,6 +13,10 @@ class Telemetry extends Component {
             time: 0.0, latitude: 0.0, longitude: 0.0, speed: 0.0, course: 0.0, distance: 0.0,
             // from '/status/vector'
             heading: 0.0, magnitude: 0.0,
+            // from '/status/adc'
+            jet1_amps: 0.0, jet2_amps: 0.0, jet_delta: 0.0, pack_voltage: 0.0,
+            // from '/status/temp'
+            jet1_temp: 0.0, jet2_temp: 0.0, compartment_temp: 0.0,
         };
 
         // Create MQTT Client, subscribe to default subscription
@@ -43,6 +47,12 @@ class Telemetry extends Component {
                     break;
                 case "/status/vector":
                     this.update_vector(obj)
+                    break;
+                case "/status/adc":
+                    this.update_adc(obj)
+                    break;
+                case "/status/temp":
+                    this.update_temp(obj)
                     break;
                 default:
                     console.log('Recv MSG on Topic : ' + topic + ' Message : ' + message.payloadString)
@@ -77,6 +87,23 @@ class Telemetry extends Component {
         this.setState({
             heading: obj.heading,
             magnitude: obj.magnitude,
+        });
+    }
+
+    update_adc (obj) {
+        this.setState({
+            jet1_amps: obj.jet1_amps,
+            jet2_amps: obj.jet2_amps,
+            pack_voltage: obj.pack_voltage,
+            jet_delta: obj.jet1_amps - obj.jet2_amps
+        });
+    }
+
+    update_temp (obj) {
+        this.setState({
+            jet1_temp: obj.jet1_temp,
+            jet2_temp: obj.jet2_temp,
+            compartment_temp: obj.compartment_temp,
         });
     }
 
@@ -166,6 +193,56 @@ class Telemetry extends Component {
                         <tr>
                             <td>Magnitude</td>
                             <td className="num">{this.state.magnitude.toFixed(4) || 0.0}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>/status/adc</h2> 
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Sensor</th>
+                            <th className="num">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jet 1 Current</td>
+                            <td className="num">{this.state.jet1_amps.toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>Jet 2 Current</td>
+                            <td className="num">{this.state.jet2_amps.toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>Jet Delta</td>
+                            <td className="num">{this.state.jet_delta.toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>Pack Voltage</td>
+                            <td className="num">{this.state.pack_voltage.toFixed(4) || 0.0}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>/status/temp</h2> 
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Sensor</th>
+                            <th className="num">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jet 1 Temp</td>
+                            <td className="num">{this.state.jet1_temp.toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>Jet 2 Temp</td>
+                            <td className="num">{this.state.jet2_temp.toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>Compartment Temp</td>
+                            <td className="num">{this.state.compartment_temp.toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
