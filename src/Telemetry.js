@@ -7,13 +7,25 @@ class Telemetry extends Component {
         super(props);
 
         this.state = {
+            // from '/status/compass'
             temp: 0.0, compass: 0.0, gyro_z: 0.0, kalman_lp: 0.0, kalman: 0.0,
+            // from '/status/gps'
             time: 0.0, latitude: 0.0, longitude: 0.0, speed: 0.0, course: 0.0, distance: 0.0,
+            // from '/status/vector'
+            heading: 0.0, magnitude: 0.0,
         };
 
+        // Create MQTT Client, subscribe to default subscription
+        var default_subscriptions = [
+            '/status/compass',
+            '/status/gps',
+            '/status/adc',
+            '/status/internal_compass',
+            '/status/temp',
+            '/status/vector',
+        ]
 
-        // Create MQTT Client, subscribe to '/status/compass'
-        this.client = mqttService.connect(true, ['/status/compass', '/status/gps'])
+        this.client = mqttService.connect(true, default_subscriptions)
         
         // Set the client's default callback message
         this.client.onMessageArrived = (message) => {
@@ -24,32 +36,48 @@ class Telemetry extends Component {
 
             switch (topic) {
                 case "/status/compass":
-                    this.setState({
-                        temp: obj.temp,
-                        compass: obj.compass,
-                        gyro_z: obj.gyro_z,
-                        kalman_lp: obj.kalman_lp,
-                        kalman: obj.kalman
-                    });
+                    this.update_compass(obj);
                     break;
                 case "/status/gps":
-                    this.setState({
-                        time: obj.time,
-                        latitude: obj.latitude,
-                        longitude: obj.longitude,
-                        speed: obj.speed,
-                        course: obj.course,
-                        distance: obj.distance,
-                    });
+                    this.update_gps(obj)
+                    break;
+                case "/status/vector":
+                    this.update_vector(obj)
                     break;
                 default:
-                    console.log('Received Message on Unrecognized Topic' + topic)
+                    console.log('Recv MSG on Topic : ' + topic + ' Message : ' + message.payloadString)
             }
-
-            
             
         }
 
+    }
+
+    update_compass (obj) {
+        this.setState({
+            temp: obj.temp,
+            compass: obj.compass,
+            gyro_z: obj.gyro_z,
+            kalman_lp: obj.kalman_lp,
+            kalman: obj.kalman
+        });
+    }
+
+    update_gps (obj) {
+        this.setState({
+            time: obj.time,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            speed: obj.speed,
+            course: obj.course,
+            distance: obj.distance,
+        });
+    }
+
+    update_vector (obj) {
+        this.setState({
+            heading: obj.heading,
+            magnitude: obj.magnitude,
+        });
     }
 
     render() {
@@ -119,6 +147,25 @@ class Telemetry extends Component {
                         <tr>
                             <td>Distance</td>
                             <td className="num">{this.state.distance.toFixed(4) || 0.0}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>/status/vector</h2> 
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Sensor</th>
+                            <th className="num">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Heading</td>
+                            <td className="num">{this.state.heading.toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>Magnitude</td>
+                            <td className="num">{this.state.magnitude.toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
