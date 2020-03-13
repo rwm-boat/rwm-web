@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import mqttService from './mqtt-common/mqttClient'
 
@@ -19,50 +19,15 @@ class Telemetry extends Component {
             jet1_temp: 0.0, jet2_temp: 0.0, compartment_temp: 0.0,
         };
 
-        // Create MQTT Client, subscribe to default subscription
-        var default_subscriptions = [
-            '/status/compass',
-            '/status/gps',
-            '/status/adc',
-            '/status/internal_compass',
-            '/status/temp',
-            '/status/vector',
-        ]
-
-        this.client = mqttService.connect(true, default_subscriptions)
-        
         // Set the client's default callback message
-        this.client.onMessageArrived = (message) => {
-            // console.log('Telemetry: Message Received on Topic : ' + message.destinationName)
-            //console.log('Telemetry : onMessageArrived:' + message.payloadString)
-            var obj = JSON.parse(message.payloadString)
-            var topic = message.destinationName
-
-            switch (topic) {
-                case "/status/compass":
-                    this.update_compass(obj);
-                    break;
-                case "/status/gps":
-                    this.update_gps(obj)
-                    break;
-                case "/status/vector":
-                    this.update_vector(obj)
-                    break;
-                case "/status/adc":
-                    this.update_adc(obj)
-                    break;
-                case "/status/temp":
-                    this.update_temp(obj)
-                    break;
-                default:
-                    console.log('Recv MSG on Topic : ' + topic + ' Message : ' + message.payloadString)
-            }
-            
-        }
-
+        mqttService.subscribe_to_topic("/status/compass", x => this.update_compass(x));
+        mqttService.subscribe_to_topic("/status/gps", x => this.update_gps(x));
+        mqttService.subscribe_to_topic("/status/vector", x => this.update_vector(x));
+        mqttService.subscribe_to_topic("/status/adc", x => this.update_adc(x));
+        mqttService.subscribe_to_topic("/status/temp", x => this.update_temp(x));
     }
 
-    update_compass (obj) {
+    update_compass(obj) {
         this.setState({
             temp: obj.temp,
             compass: obj.compass,
@@ -72,7 +37,7 @@ class Telemetry extends Component {
         });
     }
 
-    update_gps (obj) {
+    update_gps(obj) {
         this.setState({
             time: obj.time,
             latitude: obj.latitude,
@@ -83,14 +48,14 @@ class Telemetry extends Component {
         });
     }
 
-    update_vector (obj) {
+    update_vector(obj) {
         this.setState({
             heading: obj.heading,
             magnitude: obj.magnitude,
         });
     }
 
-    update_adc (obj) {
+    update_adc(obj) {
         this.setState({
             jet1_amps: obj.jet1_amps,
             jet2_amps: obj.jet2_amps,
@@ -99,7 +64,7 @@ class Telemetry extends Component {
         });
     }
 
-    update_temp (obj) {
+    update_temp(obj) {
         this.setState({
             jet1_temp: obj.jet1_temp,
             jet2_temp: obj.jet2_temp,
@@ -110,8 +75,8 @@ class Telemetry extends Component {
     render() {
         return (
             <div className="telemetry">
-                <h1>Live Telemetry</h1> 
-                <h2>/status/compass</h2> 
+                <h1>Live Telemetry</h1>
+                <h2>/status/compass</h2>
                 <table className="table">
                     <thead>
                         <tr>
@@ -142,7 +107,7 @@ class Telemetry extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <h2>/status/gps</h2> 
+                <h2>/status/gps</h2>
                 <table className="table">
                     <thead>
                         <tr>
@@ -177,7 +142,7 @@ class Telemetry extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <h2>/status/vector</h2> 
+                <h2>/status/vector</h2>
                 <table className="table">
                     <thead>
                         <tr>
@@ -196,7 +161,7 @@ class Telemetry extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <h2>/status/adc</h2> 
+                <h2>/status/adc</h2>
                 <table className="table">
                     <thead>
                         <tr>
@@ -223,7 +188,7 @@ class Telemetry extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <h2>/status/temp</h2> 
+                <h2>/status/temp</h2>
                 <table className="table">
                     <thead>
                         <tr>
