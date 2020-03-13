@@ -19,7 +19,7 @@ class Telemetry extends Component {
             jet1_temp: 0.0, jet2_temp: 0.0, compartment_temp: 0.0,
         };
 
-        // Set the client's default callback message
+        // Set callbacks for the needed topics
         mqttService.subscribe_to_topic("/status/compass", x => this.update_compass(x));
         mqttService.subscribe_to_topic("/status/gps", x => this.update_gps(x));
         mqttService.subscribe_to_topic("/status/vector", x => this.update_vector(x));
