@@ -10,6 +10,8 @@ const default_subscriptions = [
     '/status/internal_compass',
     '/status/temp',
     '/status/vector',
+    '/command/log/startstop',
+    '/command/log/name',
 ]
 
 // State for the MQTT Client
@@ -21,6 +23,8 @@ var subscriberCallbacks = {
     '/status/internal_compass': [],
     "/status/temp": [],
     "/status/vector": [],
+    "/command/log/startstop": [],
+    "/command/log/name": [],
 }
 
 // Initializes the MQTT client's connection if the connection hasn't been established
