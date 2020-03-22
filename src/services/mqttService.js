@@ -3,6 +3,8 @@ import Paho from 'paho-mqtt'
 // Configuration of the MQTT Client
 const broker_ip = '192.168.1.170';
 const broker_port = 9001
+
+// Default Subscriptions
 const default_subscriptions = [
     '/status/compass',
     '/status/gps',
@@ -50,7 +52,8 @@ function publish_message(topic, msg) {
 
 // Creates an MQTT client and connects to the broker service. 
 function connect(tryReconnect, topic) {
-    const client = new Paho.Client(broker_ip, broker_port, 'web-client1');
+    const clientID = Math.floor(Math.random() * 100);
+    const client = new Paho.Client(broker_ip, broker_port, 'web-' + clientID);
     console.log('Trying to connecct to broker')
     client.connect({
         cleanSession: true,
