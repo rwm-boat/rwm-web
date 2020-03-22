@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import mqttService from './mqtt-common/mqttClient'
+import mqttService from '../services/mqttService';
 
 import { Scatter } from 'react-chartjs-2'
 

@@ -1,19 +1,29 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
-import Telemetry from './Telemetry';
-import JetGraph from './JetGraph';
-
+import Navigation from './components/Navbar'
+import Telemetry from './components/Telemetry';
+import JetGraph from './components/JetGraph';
+import LogControl from './components/LogControl';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
-      <Telemetry />
-      <JetGraph />
+      <Router>
+        <Navigation/>
+        <div>
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+          </header>
+          <Switch>
+              <Route exact path='/telemetry' component={Telemetry} />
+              <Route path='/graphs' component={JetGraph} />
+              <Route path='/logs' component={LogControl} />
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 }

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 
-import mqttService from './mqtt-common/mqttClient'
+import mqttService from '../services/mqttService';
 
 class Telemetry extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            // from '/command/log/startstop' and '/command/log/name'
-            log_running: -1, log_name: 'none',
             // from '/status/compass'
             temp: 0.0, compass: 0.0, gyro_z: 0.0, kalman_lp: 0.0, kalman: 0.0,
             // from '/status/gps'
@@ -27,8 +25,7 @@ class Telemetry extends Component {
         mqttService.subscribe_to_topic("/status/vector", x => this.update_vector(x));
         mqttService.subscribe_to_topic("/status/adc", x => this.update_adc(x));
         mqttService.subscribe_to_topic("/status/temp", x => this.update_temp(x));
-        mqttService.subscribe_to_topic("/command/log/startstop", x => this.update_log_running(x));
-        mqttService.subscribe_to_topic("/command/log/name", x => this.update_log_name(x));
+        
     }
 
     update_compass(obj) {
@@ -76,17 +73,6 @@ class Telemetry extends Component {
         });
     }
 
-    update_log_running(obj) {
-        this.setState({
-            log_running: obj.running,
-        });
-    }
-
-    update_log_name(obj) {
-        this.setState({
-            log_name: obj.name,
-        });
-    }
 
     render() {
         return (
@@ -224,25 +210,6 @@ class Telemetry extends Component {
                         <tr>
                             <td>Compartment Temp</td>
                             <td className="num">{this.state.compartment_temp.toFixed(4) || 0.0}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <h2>/command/log</h2>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>Sensor</th>
-                            <th className="num">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Log Running</td>
-                            <td className="num">{this.state.log_running.toFixed(4) || -1.0}</td>
-                        </tr>
-                        <tr>
-                            <td>Log Name</td>
-                            <td className="num">{this.state.log_name || 'none'}</td>
                         </tr>
                     </tbody>
                 </table>
