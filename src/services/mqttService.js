@@ -29,6 +29,10 @@ var subscriberCallbacks = {
     "/command/log/name": [],
 }
 
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
 // Initializes the MQTT client's connection if the connection hasn't been established
 function initializeConnection() {
     if (client == null) {
@@ -45,9 +49,12 @@ function subscribe_to_topic(topic, callback) {
 //publishes a message to the broker
 function publish_message(topic, msg) {
     initializeConnection()
-    var message = new Paho.Message(msg);
-    message.destinationName = topic;
-    client.send(message);
+    // console.log(topic, msg)
+    sleep(500).then(() => {
+        var message = new Paho.Message(msg);
+        message.destinationName = topic;
+        client.send(message);
+    });
 }
 
 // Creates an MQTT client and connects to the broker service. 

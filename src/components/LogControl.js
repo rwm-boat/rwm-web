@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 
 import mqttService from '../services/mqttService';
 
 class LogControl extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props);
-        
-        this.state= {
-             // from '/command/log/startstop' and '/command/log/name'
-             log_running: -1, log_name: 'none',
+
+        this.state = {
+            // from '/command/log/startstop' and '/command/log/name'
+            log_running: -1, log_name: 'none', log_newname: 'Enter a Log Title',
         }
 
         // Set Callbacks for Updating Component
@@ -28,11 +30,40 @@ class LogControl extends Component {
         });
     }
 
-    render () {
+    handleChange(event) {
+        this.setState({
+            log_newname: event.target.value,
+        });
+    }
+
+    handleSubmit(event) {
+        console.log(this.state.log_newname)
+        mqttService.publish_message('/command/log/name', JSON.stringify({
+            name: this.state.log_newname
+        }));
+        event.preventDefault();
+    }
+
+    handleButtonChange(event) {
+        if (event.length > 0){
+            var old = event[0];
+            var updated = event[1];
+            if ((old != -1) && (updated != -1)){
+                // console.log(old, updated)
+                mqttService.publish_message('/command/log/startstop', JSON.stringify({
+                    running: updated
+                }));
+            }
+
+        }
+        console.log(event)
+    }
+
+    render() {
         return (
             <div className="telemetry">
-                <h1>Change Logging</h1>
-                <h2>/command/log</h2>
+                <h1>Logging Control</h1>
+                <h2>Status '/command/log'</h2>
                 <table className="table">
                     <thead>
                         <tr>
@@ -43,7 +74,7 @@ class LogControl extends Component {
                     <tbody>
                         <tr>
                             <td>Log Running</td>
-                            <td className="num">{this.state.log_running.toFixed(4) || -1.0}</td>
+                            <td className="num">{this.state.log_running || -1.0}</td>
                         </tr>
                         <tr>
                             <td>Log Name</td>
@@ -51,6 +82,19 @@ class LogControl extends Component {
                         </tr>
                     </tbody>
                 </table>
+                <h2>Publish '/command/log'</h2>
+                <form onSubmit={event => this.handleSubmit(event)}>
+                    <label>
+                        Name:
+                        <input type="text" value={this.state.log_newname} onChange={event => this.handleChange(event)} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+                <ToggleButtonGroup type="checkbox" value={this.state.log_running} onChange={event => this.handleButtonChange(event)}>
+                    <ToggleButton value={-1}>No Connection</ToggleButton>
+                    <ToggleButton value={0}>Not Logging</ToggleButton>
+                    <ToggleButton value={1}>Log Running</ToggleButton>
+                </ToggleButtonGroup>
             </div>
         );
     }
