@@ -49,14 +49,13 @@ class LogControl extends Component {
             var old = event[0];
             var updated = event[1];
             if ((old != -1) && (updated != -1)){
-                // console.log(old, updated)
+                console.log(old, updated)
                 mqttService.publish_message('/command/log/startstop', JSON.stringify({
                     running: updated
                 }));
             }
 
         }
-        console.log(event)
     }
 
     render() {

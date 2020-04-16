@@ -50,9 +50,10 @@ function subscribe_to_topic(topic, callback) {
 function publish_message(topic, msg) {
     initializeConnection()
     // console.log(topic, msg)
-    sleep(500).then(() => {
+    sleep(100).then(() => {
         var message = new Paho.Message(msg);
         message.destinationName = topic;
+        message.retained = true;
         client.send(message);
     });
 }
