@@ -1,7 +1,7 @@
 import Paho from 'paho-mqtt'
 
 // Configuration of the MQTT Client
-const broker_ip = '192.168.1.170';
+const broker_ip = '192.168.8.170';
 const broker_port = 9001
 
 // Default Subscriptions
