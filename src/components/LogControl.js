@@ -11,7 +11,7 @@ class LogControl extends Component {
 
         this.state = {
             // from '/command/log/startstop' and '/command/log/name'
-            log_running: -1, log_name: 'none', log_newname: 'Enter a Log Title',
+            log_running: 0, log_name: 'none', log_newname: 'Enter a Log Title',
         }
 
         // Set Callbacks for Updating Component

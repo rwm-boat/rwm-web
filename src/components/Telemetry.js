@@ -90,23 +90,23 @@ class Telemetry extends Component {
                     <tbody>
                         <tr>
                             <td>Temperature</td>
-                            <td className="num">{this.state.temp.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.temp).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Compass</td>
-                            <td className="num">{this.state.compass.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.compass).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Gyro-Z</td>
-                            <td className="num">{this.state.gyro_z.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.gyro_z).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Kalman-LP</td>
-                            <td className="num">{this.state.kalman_lp.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.kalman_lp).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Kalman</td>
-                            <td className="num">{this.state.kalman.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.kalman).toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -125,23 +125,23 @@ class Telemetry extends Component {
                         </tr>
                         <tr>
                             <td>Latitude</td>
-                            <td className="num">{this.state.latitude.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.latitude).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Longitude</td>
-                            <td className="num">{this.state.longitude.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.longitude).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Speed</td>
-                            <td className="num">{this.state.speed.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.speed).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Course</td>
-                            <td className="num">{this.state.course.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.course).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Distance</td>
-                            <td className="num">{this.state.distance.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.distance).toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -156,11 +156,11 @@ class Telemetry extends Component {
                     <tbody>
                         <tr>
                             <td>Heading</td>
-                            <td className="num">{this.state.heading.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.heading).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Magnitude</td>
-                            <td className="num">{this.state.magnitude.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.magnitude).toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -175,19 +175,19 @@ class Telemetry extends Component {
                     <tbody>
                         <tr>
                             <td>Jet 1 Current</td>
-                            <td className="num">{this.state.jet1_amps.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.jet1_amps).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Jet 2 Current</td>
-                            <td className="num">{this.state.jet2_amps.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.jet2_amps).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>Pack Voltage</td>
-                            <td className="num">{this.state.pack_voltage.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.pack_voltage).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
                             <td>MPA_temp</td>
-                            <td className="num">{this.state.MPA_temp.toFixed(4) || 0.0}</td>
+                            <td className="num">{Number.parseFloat(this.state.MPA_temp).toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
