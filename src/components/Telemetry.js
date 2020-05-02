@@ -14,9 +14,9 @@ class Telemetry extends Component {
             // from '/status/vector'
             heading: 0.0, magnitude: 0.0,
             // from '/status/adc'
-            jet1_amps: 0.0, jet2_amps: 0.0, jet_delta: 0.0, pack_voltage: 0.0,
+            jet1_amps: 0.0, jet2_amps: 0.0, pack_voltage: 0.0, MPA_temp: 0.0,
             // from '/status/temp'
-            jet1_temp: 0.0, jet2_temp: 0.0, compartment_temp: 0.0,
+            jet1_motor_temp: 0.0, jet2_motor_temp: 0.0, jet1_esc_temp: 0.0, jet2_esc_temp: 0.0,
         };
 
         // Set callbacks for the needed topics
@@ -61,15 +61,16 @@ class Telemetry extends Component {
             jet1_amps: obj.jet1_amps,
             jet2_amps: obj.jet2_amps,
             pack_voltage: obj.pack_voltage,
-            jet_delta: obj.jet1_amps - obj.jet2_amps
+            MPA_temp: obj.MPA_temp
         });
     }
 
     update_temp(obj) {
         this.setState({
-            jet1_temp: obj.jet1_temp,
-            jet2_temp: obj.jet2_temp,
-            compartment_temp: obj.compartment_temp,
+            jet1_motor_temp: obj.jet1_motor_temp,
+            jet2_motor_temp: obj.jet2_motor_temp,
+            jet1_esc_temp: obj.jet1_esc_temp,
+            jet2_esc_temp: obj.jet2_esc_temp,
         });
     }
 
@@ -181,12 +182,12 @@ class Telemetry extends Component {
                             <td className="num">{this.state.jet2_amps.toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
-                            <td>Jet Delta</td>
-                            <td className="num">{this.state.jet_delta.toFixed(4) || 0.0}</td>
-                        </tr>
-                        <tr>
                             <td>Pack Voltage</td>
                             <td className="num">{this.state.pack_voltage.toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>MPA_temp</td>
+                            <td className="num">{this.state.MPA_temp.toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -200,16 +201,20 @@ class Telemetry extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Jet 1 Temp</td>
-                            <td className="num">{this.state.jet1_temp.toFixed(4) || 0.0}</td>
+                            <td>Jet 1 Motor Temp</td>
+                            <td className="num">{Number.parseFloat(this.state.jet1_motor_temp).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
-                            <td>Jet 2 Temp</td>
-                            <td className="num">{this.state.jet2_temp.toFixed(4) || 0.0}</td>
+                            <td>Jet 2 Motor Temp</td>
+                            <td className="num">{Number.parseFloat(this.state.jet2_motor_temp).toFixed(4) || 0.0}</td>
                         </tr>
                         <tr>
-                            <td>Compartment Temp</td>
-                            <td className="num">{this.state.compartment_temp.toFixed(4) || 0.0}</td>
+                            <td>Jet 1 ESC Temp</td>
+                            <td className="num">{Number.parseFloat(this.state.jet1_esc_temp).toFixed(4) || 0.0}</td>
+                        </tr>
+                        <tr>
+                            <td>Jet 2 ESC Temp</td>
+                            <td className="num">{Number.parseFloat(this.state.jet2_esc_temp).toFixed(4) || 0.0}</td>
                         </tr>
                     </tbody>
                 </table>
